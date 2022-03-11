@@ -1,0 +1,197 @@
+const canvas = document.querySelector('#game');
+const ctx = canvas.getContext('2d');
+
+class SnakePart {
+    constructor(x, y) {
+        this.x = x
+        this.y = y
+    }
+}
+
+// Declaration of speed and score
+let speed = 4;
+let score = 0;
+
+// object sound
+const eatSound = new Audio('assets/mp3/gulp.mp3');
+const overSound = new Audio('assets/mp3/game-over.mp3')
+
+let tileCount = 20;
+let tileSize = canvas.width / tileCount - 2;
+
+// Placement of snake head at the beginning of the game
+let headX = 10;
+let headY = 10;
+// Array with other parts of snake
+const snakePartsArr = [];
+// Deafult lenght of snake's tail 
+let snakeTailLength = 1;
+
+// Movement direction 
+let xVelocity = 0;
+let yVelocity = 0;
+
+// Apples position
+let appleX = 5;
+let appleY = 5;
+
+
+// MAIN GAME FUNCTION
+const drawGame = () => {
+    changeSnakePosition();
+
+    let result = isGameOver()
+
+    if (result === true) {
+        return
+    }
+
+    clearScreen();
+    drawSnake();
+    checkAppleCollision();
+    drawApple();
+
+    drawScore();
+
+    setTimeout(drawGame, 1000 / speed);
+}
+
+
+const clearScreen = () => {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+}
+
+const drawSnake = () => {
+
+    ctx.fillStyle = 'green'
+
+    for (let i = 0; i < snakePartsArr.length; i++) {
+        let part = snakePartsArr[i];
+        ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize)
+    }
+
+    snakePartsArr.push(new SnakePart(headX, headY));
+    if (snakePartsArr.length > snakeTailLength) {
+        snakePartsArr.shift()
+    }
+
+    ctx.fillStyle = 'lime';
+    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize)
+}
+
+
+const changeSnakePosition = () => {
+    headX = headX + xVelocity;
+    headY = headY + yVelocity;
+}
+
+
+// drawApple
+
+const drawApple = () => {
+    ctx.fillStyle = 'purple';
+    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize)
+}
+
+// check if apple is eaten and draw apple in new, random position
+const checkAppleCollision = () => {
+    if (appleX === headX && appleY === headY) {
+        console.log('EAT APPLE!')
+        appleX = Math.floor(Math.random() * tileCount);
+        appleY = Math.floor(Math.random() * tileCount);
+        snakeTailLength++;
+        score++;
+        eatSound.play();
+    }
+}
+
+const drawScore = () => {
+    ctx.fillStyle = 'pink';
+    ctx.font = '12px Courier New';
+    ctx.fillText('Score:' + score, canvas.width - 60, 20)
+    if (score >= 5) {
+        speed = 6
+    } else if (score >= 10) {
+        speed = 8
+    } else if (score >= 15) {
+        speed = 10
+    } else if (score >= 25) {
+        speed = 12
+    }
+
+}
+
+const isGameOver = () => {
+
+    let gameOver = false;
+
+    if (xVelocity === 0 && yVelocity === 0) {
+        return false;
+    }
+
+    // walls
+    if (headX < 0 || headX === tileCount || headY < 0 || headY === tileCount) {
+        gameOver = true;
+    }
+    // snake itself
+    for (i = 0; i < snakePartsArr.length; i++) {
+        console.log(headX, headY)
+        let part = snakePartsArr[i];
+        if (part.x === headX && part.y === headY) {
+            gameOver = true;
+            break;
+        }
+    }
+
+    if (gameOver === true) {
+        ctx.fillStyle = 'pink';
+        ctx.font = '50px Courier New'
+        ctx.fillText('Game Over!', canvas.width / 6.5, canvas.height / 2)
+        overSound.play();
+    }
+
+    return gameOver;
+
+
+
+}
+
+const keyDown = (e) => {
+    // up
+    if (e.keyCode === 38) {
+        if (yVelocity === 1) {
+            return
+        }
+        yVelocity = -1;
+        xVelocity = 0;
+        // down
+    } else if (e.keyCode === 40) {
+        if (yVelocity === -1) {
+            return
+        }
+        yVelocity = 1;
+        xVelocity = 0;
+        // right
+    } else if (e.keyCode === 39) {
+        if (xVelocity === -1) {
+            return
+        }
+        yVelocity = 0;
+        xVelocity = 1;
+        // left
+    } else if (e.keyCode === 37) {
+        if (xVelocity === 1) {
+            return
+        }
+        yVelocity = 0;
+        xVelocity = -1;
+    }
+}
+
+document.body.addEventListener('keydown', keyDown);
+
+
+
+drawGame(); 
