@@ -1,5 +1,15 @@
 const canvas = document.querySelector('#game');
 const ctx = canvas.getContext('2d');
+const againBtn = document.querySelector('.try-again');
+
+canvas.width = '400'
+canvas.height = '400'
+
+let width = canvas.width
+let height = canvas.height
+
+let tileCount = width / 20;
+let tileSize = canvas.width / tileCount - 2;
 
 class SnakePart {
     constructor(x, y) {
@@ -16,14 +26,13 @@ let score = 0;
 const eatSound = new Audio('assets/mp3/gulp.mp3');
 const overSound = new Audio('assets/mp3/game-over.mp3')
 
-let tileCount = 20;
-let tileSize = canvas.width / tileCount - 2;
+
 
 // Placement of snake head at the beginning of the game
 let headX = 10;
 let headY = 10;
 // Array with other parts of snake
-const snakePartsArr = [];
+let snakePartsArr = [];
 // Deafult lenght of snake's tail 
 let snakeTailLength = 1;
 
@@ -52,6 +61,7 @@ const drawGame = () => {
     drawApple();
 
     drawScore();
+
 
     setTimeout(drawGame, 1000 / speed);
 }
@@ -111,15 +121,21 @@ const drawScore = () => {
     ctx.fillStyle = 'pink';
     ctx.font = '12px Courier New';
     ctx.fillText('Score:' + score, canvas.width - 60, 20)
-    if (score >= 5) {
+    if (score >= 2) {
         speed = 6
-    } else if (score >= 10) {
+    } else if (score >= 3) {
         speed = 8
-    } else if (score >= 15) {
+    } else if (score >= 4) {
         speed = 10
-    } else if (score >= 25) {
+    } else if (score >= 5) {
         speed = 12
     }
+
+}
+
+const createNewLevel = () => {
+    canvas.width = '500';
+    canvas.height = '500';
 
 }
 
@@ -150,13 +166,14 @@ const isGameOver = () => {
         ctx.font = '50px Courier New'
         ctx.fillText('Game Over!', canvas.width / 6.5, canvas.height / 2)
         overSound.play();
+        againBtn.classList.remove('invisible')
     }
 
     return gameOver;
 
-
-
 }
+
+
 
 const keyDown = (e) => {
     // up
@@ -192,6 +209,27 @@ const keyDown = (e) => {
 
 document.body.addEventListener('keydown', keyDown);
 
+drawGame();
 
 
-drawGame(); 
+const tryAgain = () => {
+    console.log('Play again');
+    clearStateOfGame();
+    drawGame();
+
+}
+
+const clearStateOfGame = () => {
+    clearScreen();
+    headX = 10;
+    headY = 10;
+    snakeTailLength = 1
+    snakePartsArr = []
+    drawSnake();
+    drawApple();
+    score = 0
+    drawScore();
+    againBtn.classList.add('invisible')
+}
+
+againBtn.addEventListener('click', tryAgain)

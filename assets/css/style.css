@@ -21,3 +21,27 @@ h1 {
     box-shadow: 8px 8px 33px 22px rgba(77, 51, 75, 1);
     /* background-color: #4D334B; */
 }
+
+.try-again {
+    margin: 50px 0;
+    padding: 10px 15px;
+    background-color: #4D334B;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 1000;
+    color: coral;
+    letter-spacing: 1px;
+    border-style: unset;
+}
+
+.try-again:hover {
+
+    padding: 15px 20px;
+    transition: 0.01s;
+    margin: 45px 0;
+}
+
+.invisible {
+    display: none;
+}
