@@ -18,9 +18,10 @@ class SnakePart {
     }
 }
 
-// Declaration of speed and score
+// Declaration of speed, level and score
 let speed = 4;
 let score = 0;
+let level = 1;
 
 // object sound
 const eatSound = new Audio('assets/mp3/gulp.mp3');
@@ -114,34 +115,36 @@ const checkAppleCollision = () => {
         snakeTailLength++;
         score++;
         eatSound.play();
+
+
     }
 }
 
 const drawScore = () => {
     ctx.fillStyle = 'pink';
     ctx.font = '12px Courier New';
-    ctx.fillText('Score:' + score, canvas.width - 60, 20)
-    if (score >= 2) {
+    ctx.fillText('Score:' + score, canvas.width - 60, 20);
+    if (score === 5) {
+        goTonNextLevel();
+    }
+    if (score >= 1) {
         speed = 6
-    } else if (score >= 3) {
+    } else if (score >= 2) {
         speed = 8
-    } else if (score >= 4) {
+    } else if (score >= 3) {
         speed = 10
-    } else if (score >= 5) {
+    } else if (score >= 4) {
         speed = 12
     }
 
 }
 
-const createNewLevel = () => {
-    canvas.width = '500';
-    canvas.height = '500';
 
-}
 
 const isGameOver = () => {
 
     let gameOver = false;
+    let nextLevel = false;
 
     if (xVelocity === 0 && yVelocity === 0) {
         return false;
@@ -230,6 +233,14 @@ const clearStateOfGame = () => {
     score = 0
     drawScore();
     againBtn.classList.add('invisible')
+}
+
+const goTonNextLevel = () => {
+    let newWidth = width * 2;
+    let newHeight = height * 2;
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+    clearStateOfGame()
 }
 
 againBtn.addEventListener('click', tryAgain)
