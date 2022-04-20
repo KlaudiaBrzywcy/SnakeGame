@@ -2,14 +2,14 @@ const canvas = document.querySelector('#game');
 const ctx = canvas.getContext('2d');
 const againBtn = document.querySelector('.try-again');
 
-canvas.width = '400'
-canvas.height = '400'
 
-let width = canvas.width
-let height = canvas.height
 
-let tileCount = width / 20;
-let tileSize = canvas.width / tileCount - 2;
+
+canvas.width = '400';
+canvas.height = '400';
+
+let tileCount = 20;
+let tileSize = tileCount - 2;
 
 class SnakePart {
     constructor(x, y) {
@@ -90,6 +90,7 @@ const drawSnake = () => {
 
     ctx.fillStyle = 'lime';
     ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize)
+
 }
 
 
@@ -124,7 +125,7 @@ const drawScore = () => {
     ctx.fillStyle = 'pink';
     ctx.font = '12px Courier New';
     ctx.fillText('Score:' + score, canvas.width - 60, 20);
-    if (score === 5) {
+    if (score === 1) {
         goTonNextLevel();
     }
     if (score >= 1) {
@@ -144,7 +145,7 @@ const drawScore = () => {
 const isGameOver = () => {
 
     let gameOver = false;
-    let nextLevel = false;
+
 
     if (xVelocity === 0 && yVelocity === 0) {
         return false;
@@ -222,6 +223,8 @@ const tryAgain = () => {
 
 }
 
+// Function to clear state of game in case of try again btn press
+
 const clearStateOfGame = () => {
     clearScreen();
     headX = 10;
@@ -235,12 +238,35 @@ const clearStateOfGame = () => {
     againBtn.classList.add('invisible')
 }
 
+// Function to prepare new state of game in case of moving to next level
+
+// const nextLevelStateOfGame = () => {
+//     canvas.width = '800';
+//     canvas.height = '800';
+//     // tileCount = 30;
+//     // tileSize = tileCount - 2;
+
+
+//     clearScreen();
+//     headX = headX;
+//     headY = headY;
+//     snakeTailLength = 1
+//     snakePartsArr = []
+//     drawSnake();
+//     drawApple();
+//     score = 0;
+//     drawScore();
+// }
+
 const goTonNextLevel = () => {
-    let newWidth = width * 2;
-    let newHeight = height * 2;
-    canvas.width = newWidth;
-    canvas.height = newHeight;
-    clearStateOfGame()
+    // nextLevel = true;
+    // canvas.width = '800';
+    // canvas.height = '800';
+    // tileCount = ????;
+    console.log(tileCount)
+    console.log('Next level Yayy!')
+    // nextLevelStateOfGame();
+
 }
 
 againBtn.addEventListener('click', tryAgain)

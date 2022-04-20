@@ -1,10 +1,15 @@
 body {
+
+    background: rgb(131, 58, 180);
+    background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(195, 253, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+}
+
+.game-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgb(131, 58, 180);
-    background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(195, 253, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+    margin: 20px;
 }
 
 h1 {
@@ -19,7 +24,7 @@ h1 {
     -webkit-box-shadow: 8px 8px 33px 22px rgba(77, 51, 75, 1);
     -moz-box-shadow: 8px 8px 33px 22px rgba(77, 51, 75, 1);
     box-shadow: 8px 8px 33px 22px rgba(77, 51, 75, 1);
-    /* background-color: #4D334B; */
+
 }
 
 .try-again {
